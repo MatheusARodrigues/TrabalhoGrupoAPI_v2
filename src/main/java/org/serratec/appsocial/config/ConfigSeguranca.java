@@ -39,6 +39,8 @@ public class ConfigSeguranca {
 					requests.requestMatchers(HttpMethod.GET, "/login").permitAll();
 					requests.requestMatchers(HttpMethod.GET, "/usuarios").authenticated();
 					requests.requestMatchers(HttpMethod.POST, "/usuarios").authenticated();
+					requests.requestMatchers("/swagger-ui/**").permitAll();
+					requests.requestMatchers("/v3/api-docs").permitAll();
 
 				}).sessionManagement(session -> {
 					session.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
