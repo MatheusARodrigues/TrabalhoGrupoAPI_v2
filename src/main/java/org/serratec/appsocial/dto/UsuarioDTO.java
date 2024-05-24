@@ -72,10 +72,7 @@ public class UsuarioDTO {
 	}
 	//comentario
 
-	public Usuario toEntity() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+
 	
 	  // Método para converter de Usuario para UsuarioDTO
     public static UsuarioDTO fromUsuario(Usuario usuario) {

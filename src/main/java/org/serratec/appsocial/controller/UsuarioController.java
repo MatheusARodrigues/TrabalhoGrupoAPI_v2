@@ -5,6 +5,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.serratec.appsocial.dto.UsuarioDTO;
+import org.serratec.appsocial.dto.UsuarioInserirDTO;
 import org.serratec.appsocial.model.Usuario;
 import org.serratec.appsocial.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,21 +49,27 @@ public class UsuarioController {
 
 	@PostMapping // Método para criar um novo usuário
 	@ResponseStatus(HttpStatus.CREATED)
-	public UsuarioDTO createLivro(@Valid @RequestBody UsuarioDTO usuarioDTO) {
-		Usuario usuario = usuarioRepository.save(usuarioDTO.toEntity());
+	public UsuarioDTO createLivro(@Valid @RequestBody UsuarioInserirDTO usuarioInserirDTO) {
+		Usuario usuario = new Usuario();
+		usuario.setDataNascimento(usuarioInserirDTO.getDataNascimento());
+		usuario.setEmail(usuarioInserirDTO.getEmail());
+		usuario.setNome(usuarioInserirDTO.getNome());
+		usuario.setSenha(usuarioInserirDTO.getSenha());
+		usuario.setSobrenome(usuarioInserirDTO.getSobrenome());
+		usuario = usuarioRepository.save(usuario);
+		
 		return new UsuarioDTO(usuario);
 	}
 
-	@PutMapping("/{id}") // Método para atualizar um usuário
-	public ResponseEntity<UsuarioDTO> atualizar(@PathVariable Long id, @Valid @RequestBody UsuarioDTO usuarioDTO) {
-		if (!usuarioRepository.existsById(id)) {
-			return ResponseEntity.notFound().build();
-		}
-		Usuario usuario = usuarioDTO.toEntity();
-		usuario.setId(id);
-		usuario = usuarioRepository.save(usuario);
-		return ResponseEntity.ok(new UsuarioDTO(usuario));
-	}
+	/*
+	 * @PutMapping("/{id}") // Método para atualizar um usuário public
+	 * ResponseEntity<UsuarioDTO> atualizar(@PathVariable Long
+	 * id, @Valid @RequestBody UsuarioDTO usuarioDTO) { if
+	 * (!usuarioRepository.existsById(id)) { return
+	 * ResponseEntity.notFound().build(); } Usuario usuario = usuarioDTO;
+	 * usuario.setId(id); usuario = usuarioRepository.save(usuario); return
+	 * ResponseEntity.ok(new UsuarioDTO(usuario)); }
+	 */
 
 	@DeleteMapping("/{id}") // Método para deletar um usuário do banco
 	@ResponseStatus(HttpStatus.NO_CONTENT)
