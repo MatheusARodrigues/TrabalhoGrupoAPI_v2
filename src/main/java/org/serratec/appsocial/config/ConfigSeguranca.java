@@ -47,6 +47,9 @@ public class ConfigSeguranca {
 					requests.requestMatchers(HttpMethod.POST, "/comentarios").authenticated();
 					requests.requestMatchers(HttpMethod.PUT, "/comentarios/{id}").authenticated();
 					requests.requestMatchers(HttpMethod.DELETE, "/comentarios/{id}").authenticated();
+					requests.requestMatchers(HttpMethod.POST, "/relacionamentos/{idSeguir}/seguir/{id}").authenticated();
+                    requests.requestMatchers(HttpMethod.DELETE, "/relacionamentos/{idSeguir}/deixarDeSeguir/{id}").authenticated();
+					
 					requests.requestMatchers("/swagger-ui/**").permitAll();
 					requests.requestMatchers("/v3/api-docs").permitAll();
 
