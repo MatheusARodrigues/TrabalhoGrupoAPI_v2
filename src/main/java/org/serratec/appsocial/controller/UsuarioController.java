@@ -6,6 +6,8 @@ import java.util.stream.Collectors;
 
 import org.serratec.appsocial.dto.UsuarioDTO;
 import org.serratec.appsocial.dto.UsuarioInserirDTO;
+import org.serratec.appsocial.exception.EmailException;
+import org.serratec.appsocial.exception.SenhaException;
 import org.serratec.appsocial.model.Usuario;
 import org.serratec.appsocial.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +17,6 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -50,6 +51,14 @@ public class UsuarioController {
 	@PostMapping // Método para criar um novo usuário
 	@ResponseStatus(HttpStatus.CREATED)
 	public UsuarioDTO createLivro(@Valid @RequestBody UsuarioInserirDTO usuarioInserirDTO) {
+		
+		if (!usuarioInserirDTO.getSenha().equalsIgnoreCase(usuarioInserirDTO.getConfirmaSenha())) {
+			throw new SenhaException("Senha e Confirma Senha não são iguais");
+		}
+		Usuario usuarioBd = usuarioRepository.findByEmail(usuarioInserirDTO.getEmail());
+		if (usuarioBd != null) {
+			throw new EmailException("Email ja existente");
+		}
 		Usuario usuario = new Usuario();
 		usuario.setDataNascimento(usuarioInserirDTO.getDataNascimento());
 		usuario.setEmail(usuarioInserirDTO.getEmail());
@@ -58,18 +67,20 @@ public class UsuarioController {
 		usuario.setSobrenome(usuarioInserirDTO.getSobrenome());
 		usuario = usuarioRepository.save(usuario);
 		
+		
+		
 		return new UsuarioDTO(usuario);
 	}
 
-	/*
-	 * @PutMapping("/{id}") // Método para atualizar um usuário public
-	 * ResponseEntity<UsuarioDTO> atualizar(@PathVariable Long
-	 * id, @Valid @RequestBody UsuarioDTO usuarioDTO) { if
-	 * (!usuarioRepository.existsById(id)) { return
-	 * ResponseEntity.notFound().build(); } Usuario usuario = usuarioDTO;
-	 * usuario.setId(id); usuario = usuarioRepository.save(usuario); return
-	 * ResponseEntity.ok(new UsuarioDTO(usuario)); }
-	 */
+	
+	 @PutMapping("/{id}") // Método para atualizar um usuário public
+	 ResponseEntity<UsuarioDTO> atualizar(@PathVariable Long
+	 id, @Valid @RequestBody UsuarioDTO usuarioDTO) { if
+	 (!usuarioRepository.existsById(id)) { return
+	 ResponseEntity.notFound().build(); } Usuario usuario = usuarioDTO;
+	 usuario.setId(id); usuario = usuarioRepository.save(usuario); return
+	  ResponseEntity.ok(new UsuarioDTO(usuario)); }
+	 
 
 	@DeleteMapping("/{id}") // Método para deletar um usuário do banco
 	@ResponseStatus(HttpStatus.NO_CONTENT)
