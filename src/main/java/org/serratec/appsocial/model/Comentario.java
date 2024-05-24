@@ -2,6 +2,8 @@ package org.serratec.appsocial.model;
 
 import java.time.LocalDate;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -17,6 +19,7 @@ public class Comentario {
 	private String conteudo;
 	private LocalDate dataCriacao;
 
+	@JsonIgnore
 	@ManyToOne
 	private Postagem postagem;
 
