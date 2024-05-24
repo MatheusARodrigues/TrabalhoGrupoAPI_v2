@@ -2,7 +2,9 @@ package org.serratec.appsocial.controller;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
+import org.serratec.appsocial.dto.UsuarioDTO;
 import org.serratec.appsocial.model.Usuario;
 import org.serratec.appsocial.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,33 +30,38 @@ public class UsuarioController {
 	private UsuarioRepository usuarioRepository;
 
 	@GetMapping // Método para Listar todos os Usuários | localhost:8080/usuarios
-	public ResponseEntity<List<Usuario>> listar() {
-		return ResponseEntity.ok(usuarioRepository.findAll());
+	public ResponseEntity<List<UsuarioDTO>> listar() {
+		List<UsuarioDTO> usuariosDTO = usuarioRepository.findAll().stream()
+				.map(usuario -> new UsuarioDTO(usuario))
+				.collect(Collectors.toList());
+		return ResponseEntity.ok(usuariosDTO);
 	}
 
 	@GetMapping("/{id}") // Método para listar usuário por ID | localhost:8080/usuarios/id
-	public ResponseEntity<Usuario> buscar(@PathVariable Long id) {
-		Optional<Usuario> livroOpt = usuarioRepository.findById(id);
-		if (livroOpt.isPresent()) {
-			return ResponseEntity.ok(livroOpt.get());
+	public ResponseEntity<UsuarioDTO> buscar(@PathVariable Long id) {
+		Optional<Usuario> usuarioOpt = usuarioRepository.findById(id);
+		if (usuarioOpt.isPresent()) {
+			return ResponseEntity.ok(new UsuarioDTO(usuarioOpt.get()));
 		}
 		return ResponseEntity.notFound().build();
 	}
 
 	@PostMapping // Método para criar um novo usuário
 	@ResponseStatus(HttpStatus.CREATED)
-	public Usuario createLivro(@Valid @RequestBody Usuario usuario) {
-		return usuarioRepository.save(usuario);
+	public UsuarioDTO createLivro(@Valid @RequestBody UsuarioDTO usuarioDTO) {
+		Usuario usuario = usuarioRepository.save(usuarioDTO.toEntity());
+		return new UsuarioDTO(usuario);
 	}
 
 	@PutMapping("/{id}") // Método para atualizar um usuário
-	public ResponseEntity<Usuario> atualizar(@PathVariable Long id, @Valid @RequestBody Usuario usuario) {
+	public ResponseEntity<UsuarioDTO> atualizar(@PathVariable Long id, @Valid @RequestBody UsuarioDTO usuarioDTO) {
 		if (!usuarioRepository.existsById(id)) {
 			return ResponseEntity.notFound().build();
 		}
+		Usuario usuario = usuarioDTO.toEntity();
 		usuario.setId(id);
 		usuario = usuarioRepository.save(usuario);
-		return ResponseEntity.ok(usuario);
+		return ResponseEntity.ok(new UsuarioDTO(usuario));
 	}
 
 	@DeleteMapping("/{id}") // Método para deletar um usuário do banco
@@ -66,5 +73,5 @@ public class UsuarioController {
 		usuarioRepository.deleteById(id);
 		return ResponseEntity.noContent().build();
 	}
-
 }
+

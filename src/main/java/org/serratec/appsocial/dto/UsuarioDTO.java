@@ -71,4 +71,25 @@ public class UsuarioDTO {
 		this.dataNascimento = dataNascimento;
 	}
 	//comentario
+
+	public Usuario toEntity() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	  // Método para converter de Usuario para UsuarioDTO
+    public static UsuarioDTO fromUsuario(Usuario usuario) {
+        return new UsuarioDTO(usuario.getId(), usuario.getNome(), usuario.getSobrenome(), usuario.getEmail(), usuario.getDataNascimento());
+    }
+
+    // Método para converter de UsuarioDTO para Usuario
+    public Usuario toUsuario() {
+        Usuario usuario = new Usuario();
+        usuario.setId(this.id);
+        usuario.setNome(this.nome);
+        usuario.setSobrenome(this.sobrenome);
+        usuario.setEmail(this.email);
+        usuario.setDataNascimento(this.dataNascimento);
+        return usuario;
+    }
 }
