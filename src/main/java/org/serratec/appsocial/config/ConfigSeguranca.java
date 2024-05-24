@@ -41,15 +41,13 @@ public class ConfigSeguranca {
 					requests.requestMatchers(HttpMethod.POST, "/usuarios").authenticated();
 					requests.requestMatchers(HttpMethod.GET, "/postagens").authenticated();
 					requests.requestMatchers(HttpMethod.POST, "/postagens").authenticated();
-					requests.requestMatchers(HttpMethod.PUT,"/postagens/{id}").authenticated();
+					requests.requestMatchers(HttpMethod.PUT, "/postagens/{id}").authenticated();
 					requests.requestMatchers(HttpMethod.DELETE, "/postagens/{id}").authenticated();
 					requests.requestMatchers(HttpMethod.GET, "/comentarios").authenticated();
 					requests.requestMatchers(HttpMethod.POST, "/comentarios").authenticated();
 					requests.requestMatchers(HttpMethod.PUT, "/comentarios/{id}").authenticated();
 					requests.requestMatchers(HttpMethod.DELETE, "/comentarios/{id}").authenticated();
 					requests.requestMatchers("/swagger-ui/**").permitAll();
-                    requests.requestMatchers("/v3/api-docs").permitAll();
-			requests.requestMatchers("/swagger-ui/**").permitAll();
 					requests.requestMatchers("/v3/api-docs").permitAll();
 
 				}).sessionManagement(session -> {
@@ -90,7 +88,7 @@ public class ConfigSeguranca {
 	BCryptPasswordEncoder bCryptPasswordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
-	
-	//comentario
+
+	// comentario
 
 }

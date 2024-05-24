@@ -26,7 +26,7 @@ public class RelacionamentoController {
 
 	private RelacionamentoRepository relacionamentoRepository;
 
-	@PostMapping("/{idSeguir}/seguir/{id}") // Método para seguir | localhost:8080/relacionamentos/2/seguir/4
+	@PostMapping("/{id}/seguir/{idSeguir}") // Método para seguir | localhost:8080/relacionamentos/2/seguir/4
 	@ResponseStatus(HttpStatus.CREATED)
 
 	public Usuario createRelacionemento(@PathVariable Long id, @PathVariable Long idSeguir) {
