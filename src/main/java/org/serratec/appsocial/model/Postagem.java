@@ -3,6 +3,9 @@ package org.serratec.appsocial.model;
 import java.time.LocalDate;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -20,6 +23,7 @@ public class Postagem {
 	private LocalDate dataCriacao;
 
 	@ManyToOne
+	@JsonBackReference
 	private Usuario autor;
 
 	@OneToMany(mappedBy = "postagem")
@@ -66,6 +70,4 @@ public class Postagem {
 	public void setComentarios(List<Comentario> comentarios) {
 		this.comentarios = comentarios;
 	}
-	//comentario
-
 }

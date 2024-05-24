@@ -1,8 +1,10 @@
-OBS: inserir no banco de dados o usuario padrão admin de forma manual para fazer o login
+OBS: inserir no banco de dados os usuários padrão admin de forma manual para fazer o login
 no endpoint get /login e gerar o token para acessar todas as rotas autenticadas =>
 
 INSERT INTO usuario (nome, sobrenome, email, senha, data_nascimento) VALUES
 ('Joao', 'Silva', 'joao@email.com', '$2a$12$sPPV9up/RlaZGUBA1AU7ju66f4o.eNSGhhCaWUdr4rnvDZ.QjaMtK', '1998-05-04');
+INSERT INTO usuario (nome, sobrenome, email, senha, data_nascimento) VALUES
+('Fernando', 'Diniz', 'fernando@email.com', '$2a$12$sPPV9up/RlaZGUBA1AU7ju66f4o.eNSGhhCaWUdr4rnvDZ.QjaMtK', '1998-05-04');
 SELECT * FROM usuario;
 
 Requisição=>
@@ -10,6 +12,10 @@ GET localhost:8080/login
 {
   "username": "joao@email.com",
   "password": "123456"
-}
-
-#comentario: subir para o git
+} 
+OU
+GET localhost:8080/login
+{
+  "username": "fernando@email.com",
+  "password": "123456"
+} 

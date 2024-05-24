@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.serratec.appsocial.model.Postagem;
 import org.serratec.appsocial.repository.PostagemRepository;
+import org.serratec.appsocial.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +28,9 @@ public class PostagemController {
 	
 	@Autowired
 	private PostagemRepository postagemRepository;
+	
+	@Autowired
+	private UsuarioRepository usuarioRepository;
 
 	@GetMapping // Método para Listar todos os Usuários
 	public ResponseEntity<List<Postagem>> listar() {

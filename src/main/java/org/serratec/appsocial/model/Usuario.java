@@ -193,6 +193,11 @@ public class Usuario implements UserDetails {
 	@Override
 	public String toString() {
 		return "* Código: " + id + "\n* Nome: " + nome + "\n* Email: " + email;
+	}
+
+	public Usuario orElseThrow(Object object) {
+		// TODO Auto-generated method stub
+		return null;
 	};
 	// comentario
 }

@@ -20,7 +20,7 @@ public class UsuarioDetalheImp implements UserDetailsService {
 		if (usuario == null) {
 			throw new RuntimeException();
 		}
-		return usuario;
+		return (UserDetails) usuario;
 	}
 	//comentario
 
