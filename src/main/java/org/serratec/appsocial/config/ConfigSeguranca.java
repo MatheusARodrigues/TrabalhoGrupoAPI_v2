@@ -49,7 +49,9 @@ public class ConfigSeguranca {
 					requests.requestMatchers(HttpMethod.DELETE, "/comentarios/{id}").authenticated();
 					requests.requestMatchers("/swagger-ui/**").permitAll();
                     requests.requestMatchers("/v3/api-docs").permitAll();
-				
+			requests.requestMatchers("/swagger-ui/**").permitAll();
+					requests.requestMatchers("/v3/api-docs").permitAll();
+
 				}).sessionManagement(session -> {
 					session.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 				});
