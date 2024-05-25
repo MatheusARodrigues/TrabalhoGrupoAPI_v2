@@ -49,9 +49,14 @@ public class ConfigSeguranca {
 					 * requests.requestMatchers("/v3/api-docs").permitAll();
 					 */
 					
-					requests.requestMatchers("/swagger-ui/**").permitAll();
-					requests.requestMatchers("/swagger-resources/**").permitAll();
-					requests.requestMatchers("/v3/api-docs").permitAll();
+					
+					 requests.requestMatchers("/swagger-ui/**").permitAll();
+					 requests.requestMatchers("/swagger-resources/**").permitAll();
+					 requests.requestMatchers("/v3/api-docs").permitAll();
+					 requests.requestMatchers("/swagger-ui.html/").permitAll();
+					 
+					
+					
 					
 					requests.requestMatchers(HttpMethod.GET, "/login").permitAll();
 					requests.requestMatchers(HttpMethod.GET, "/usuarios").authenticated();
