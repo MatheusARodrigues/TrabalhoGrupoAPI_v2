@@ -28,6 +28,10 @@ public class ConfigSeguranca {
 
 	@Autowired
 	UserDetailsService userDetailsService;
+	
+	@Autowired
+	OpenAPIConfig openApiConfig;
+	
 
 	@Autowired
 	JwtUtil jwtUtil;
@@ -36,6 +40,19 @@ public class ConfigSeguranca {
 	SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http.csrf(csrf -> csrf.disable()).cors((cors) -> cors.configurationSource(corsConfigurationSource()))
 				.httpBasic(Customizer.withDefaults()).authorizeHttpRequests(requests -> {
+					
+					/*
+					 * requests.requestMatchers("http://localhost:8080/swagger-ui/index.html").
+					 * permitAll(); requests.requestMatchers("/swagger-ui/**").permitAll();
+					 * requests.requestMatchers("/swagger-ui/").permitAll();
+					 * requests.requestMatchers("/swagger-ui/index.html").permitAll();
+					 * requests.requestMatchers("/v3/api-docs").permitAll();
+					 */
+					
+					requests.requestMatchers("/swagger-ui/**").permitAll();
+					requests.requestMatchers("/swagger-resources/**").permitAll();
+					requests.requestMatchers("/v3/api-docs").permitAll();
+					
 					requests.requestMatchers(HttpMethod.GET, "/login").permitAll();
 					requests.requestMatchers(HttpMethod.GET, "/usuarios").authenticated();
 					requests.requestMatchers(HttpMethod.GET, "/usuarios/{id}").authenticated();
@@ -57,8 +74,6 @@ public class ConfigSeguranca {
 					requests.requestMatchers(HttpMethod.POST, "/relacionamentos/{idSeguir}/seguir/{id}").authenticated();
                     requests.requestMatchers(HttpMethod.DELETE, "/relacionamentos/{idSeguir}/deixarDeSeguir/{id}").authenticated();
 					
-					requests.requestMatchers("/swagger-ui/**").permitAll();
-					requests.requestMatchers("/v3/api-docs").permitAll();
 
 				}).sessionManagement(session -> {
 					session.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
@@ -67,6 +82,7 @@ public class ConfigSeguranca {
 		JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(
 				authenticationManager(http.getSharedObject(AuthenticationConfiguration.class)), jwtUtil);
 		jwtAuthenticationFilter.setFilterProcessesUrl("/login");
+		
 
 		http.addFilter(jwtAuthenticationFilter);
 		http.addFilter(new JwtAuthorizationFilter(
