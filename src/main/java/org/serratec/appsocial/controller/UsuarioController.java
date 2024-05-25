@@ -4,12 +4,15 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.serratec.appsocial.dto.UsuarioAtualizarDTO;
+import org.serratec.appsocial.dto.UsuarioAtualizarSenhaDTO;
 import org.serratec.appsocial.dto.UsuarioDTO;
 import org.serratec.appsocial.dto.UsuarioInserirDTO;
 import org.serratec.appsocial.exception.EmailException;
 import org.serratec.appsocial.exception.SenhaException;
 import org.serratec.appsocial.model.Usuario;
 import org.serratec.appsocial.repository.UsuarioRepository;
+import org.serratec.appsocial.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +20,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -31,10 +35,12 @@ public class UsuarioController {
 	@Autowired
 	private UsuarioRepository usuarioRepository;
 
+	@Autowired
+	private UsuarioService usuarioService;
+
 	@GetMapping // Método para Listar todos os Usuários | localhost:8080/usuarios
 	public ResponseEntity<List<UsuarioDTO>> listar() {
-		List<UsuarioDTO> usuariosDTO = usuarioRepository.findAll().stream()
-				.map(usuario -> new UsuarioDTO(usuario))
+		List<UsuarioDTO> usuariosDTO = usuarioRepository.findAll().stream().map(usuario -> new UsuarioDTO(usuario))
 				.collect(Collectors.toList());
 		return ResponseEntity.ok(usuariosDTO);
 	}
@@ -51,7 +57,7 @@ public class UsuarioController {
 	@PostMapping // Método para criar um novo usuário
 	@ResponseStatus(HttpStatus.CREATED)
 	public UsuarioDTO createLivro(@Valid @RequestBody UsuarioInserirDTO usuarioInserirDTO) {
-		
+
 		if (!usuarioInserirDTO.getSenha().equalsIgnoreCase(usuarioInserirDTO.getConfirmaSenha())) {
 			throw new SenhaException("Senha e Confirma Senha não são iguais");
 		}
@@ -66,21 +72,25 @@ public class UsuarioController {
 		usuario.setSenha(usuarioInserirDTO.getSenha());
 		usuario.setSobrenome(usuarioInserirDTO.getSobrenome());
 		usuario = usuarioRepository.save(usuario);
-		
-		
-		
+
 		return new UsuarioDTO(usuario);
 	}
 
-	
-	 @PutMapping("/{id}") // Método para atualizar um usuário public
-	 ResponseEntity<UsuarioDTO> atualizar(@PathVariable Long
-	 id, @Valid @RequestBody UsuarioDTO usuarioDTO) { if
-	 (!usuarioRepository.existsById(id)) { return
-	 ResponseEntity.notFound().build(); } Usuario usuario = usuarioDTO;
-	 usuario.setId(id); usuario = usuarioRepository.save(usuario); return
-	  ResponseEntity.ok(new UsuarioDTO(usuario)); }
-	 
+
+	@PutMapping("/{id}/atualizarDados") //metodo para atualizar NOME e DATANASCIMENTO
+	public ResponseEntity<UsuarioDTO> atualizarDados(@PathVariable Long id,
+			@RequestBody UsuarioAtualizarDTO usuarioAtualizarDTO) {
+		UsuarioDTO usuarioAtualizado = usuarioService.atualizarDados(id, usuarioAtualizarDTO);
+		return ResponseEntity.ok(usuarioAtualizado);
+	}
+
+	@PutMapping("/{id}/atualizarSenha") //metodo para atualizar SENHA
+	 public ResponseEntity<Void> atualizarSenha(
+	            @PathVariable Long id, 
+	            @RequestBody UsuarioAtualizarSenhaDTO usuarioAtualizarSenhaDTO) {
+	        usuarioService.atualizarSenha(id, usuarioAtualizarSenhaDTO);
+	        return ResponseEntity.noContent().build();
+	    }
 
 	@DeleteMapping("/{id}") // Método para deletar um usuário do banco
 	@ResponseStatus(HttpStatus.NO_CONTENT)
@@ -92,4 +102,3 @@ public class UsuarioController {
 		return ResponseEntity.noContent().build();
 	}
 }
-

@@ -38,15 +38,22 @@ public class ConfigSeguranca {
 				.httpBasic(Customizer.withDefaults()).authorizeHttpRequests(requests -> {
 					requests.requestMatchers(HttpMethod.GET, "/login").permitAll();
 					requests.requestMatchers(HttpMethod.GET, "/usuarios").authenticated();
+					requests.requestMatchers(HttpMethod.GET, "/usuarios/{id}").authenticated();
 					requests.requestMatchers(HttpMethod.POST, "/usuarios").authenticated();
+					requests.requestMatchers(HttpMethod.PUT, "/usuarios/{id}/atualizarDados").authenticated();
+					requests.requestMatchers(HttpMethod.PUT, "/usuarios/{id}/atualizarSenha").authenticated();
+					requests.requestMatchers(HttpMethod.DELETE, "/usuarios/{id}").authenticated();
+					
 					requests.requestMatchers(HttpMethod.GET, "/postagens").authenticated();
 					requests.requestMatchers(HttpMethod.POST, "/postagens").authenticated();
 					requests.requestMatchers(HttpMethod.PUT, "/postagens/{id}").authenticated();
 					requests.requestMatchers(HttpMethod.DELETE, "/postagens/{id}").authenticated();
+					
 					requests.requestMatchers(HttpMethod.GET, "/comentarios").authenticated();
 					requests.requestMatchers(HttpMethod.POST, "/comentarios").authenticated();
 					requests.requestMatchers(HttpMethod.PUT, "/comentarios/{id}").authenticated();
 					requests.requestMatchers(HttpMethod.DELETE, "/comentarios/{id}").authenticated();
+					
 					requests.requestMatchers(HttpMethod.POST, "/relacionamentos/{idSeguir}/seguir/{id}").authenticated();
                     requests.requestMatchers(HttpMethod.DELETE, "/relacionamentos/{idSeguir}/deixarDeSeguir/{id}").authenticated();
 					

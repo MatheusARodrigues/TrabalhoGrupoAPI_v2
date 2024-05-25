@@ -9,6 +9,9 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 @Entity
 public class Comentario {
@@ -16,7 +19,11 @@ public class Comentario {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
+	@NotNull
+	@NotBlank(message = "Preencha o comentário.")
+	@Size(max = 250)
 	private String conteudo;
+
 	private LocalDate dataCriacao;
 
 	@JsonIgnore
@@ -57,5 +64,5 @@ public class Comentario {
 		this.postagem = postagem;
 	}
 
-	//comentario
+	// comentario
 }
