@@ -32,28 +32,8 @@ public class OpenAPIConfig {
 		
 
 		Contact contact = new Contact();
-		contact.setEmail("https://github.com/mathelenoo");
-		contact.setName("Matheus Heleno");
-		contact.setUrl("https://github.com/mathelenoo");
-		
-
-		contact = new Contact();
-		contact.setEmail("https://github.com/vittorioFassano");
-		contact.setName("vittorioFassano");
-		contact.setUrl("https://github.com/vittorioFassano");
-		
-
-		contact = new Contact();
-		contact.setEmail("https://github.com/wellinDias");
-		contact.setName("Wellington Dias");
-		contact.setUrl("https://github.com/wellinDias");
-		
-
-		contact = new Contact();
-		contact.setEmail("https://github.com/MatheusARodrigues");
-		contact.setName("Matheus Adriano Rodrigues");
-		contact.setUrl("https://github.com/MatheusARodrigues");
-		
+		contact.setName("Repositorio Da Aplicação");
+		contact.setUrl("https://github.com/MatheusARodrigues/TrabalhoGrupoAPI_v2");		
 
 		License apacheLicense = new License().name("Apache License").url("https://www.apache.org/license/LICENSE-2.0");
 

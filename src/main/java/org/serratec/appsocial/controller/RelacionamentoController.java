@@ -8,6 +8,8 @@ import org.serratec.appsocial.model.Relacionamento;
 import org.serratec.appsocial.model.Usuario;
 import org.serratec.appsocial.repository.RelacionamentoRepository;
 import org.serratec.appsocial.repository.UsuarioRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,8 +19,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
 @RestController
 @RequestMapping("/relacionamentos")
@@ -32,6 +36,14 @@ public class RelacionamentoController {
 
 	@PostMapping("/{id}/seguir/{idSeguir}")
 	@ResponseStatus(HttpStatus.CREATED)
+	@Operation(summary = "Segue um usuário", description = "Começa a seguir um usuário")
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "Segue um usuário"),
+			@ApiResponse(responseCode = "401", description = "Erro de autenticação"),
+			@ApiResponse(responseCode = "403", description = "Não há permissão para acessar o recurso"),
+			@ApiResponse(responseCode = "404", description = "Recurso não encontrado"),
+			@ApiResponse(responseCode = "500", description = "Exceção interna da aplicação")
+	})
 	public ResponseEntity<String> createRelacionamento(@PathVariable Long id, @PathVariable Long idSeguir) {
 		Optional<Usuario> usuarioOpt = usuarioRepository.findById(id);
 		Optional<Usuario> usuarioSeguirOpt = usuarioRepository.findById(idSeguir);
@@ -57,6 +69,14 @@ public class RelacionamentoController {
 
 	@DeleteMapping("/{id}/deixarDeSeguir/{idSeguir}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
+	@Operation(summary = "Deixa de seguir um usuário", description = "Remove um seguidor")
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "Remove um seguidor"),
+			@ApiResponse(responseCode = "401", description = "Erro de autenticação"),
+			@ApiResponse(responseCode = "403", description = "Não há permissão para acessar o recurso"),
+			@ApiResponse(responseCode = "404", description = "Recurso não encontrado"),
+			@ApiResponse(responseCode = "500", description = "Exceção interna da aplicação")
+	})
     public void deleteRelacionamento(@PathVariable Long id, @PathVariable Long idSeguir) {
         Optional<Usuario> usuarioOpt = usuarioRepository.findById(id);
         Optional<Usuario> usuarioSeguirOpt = usuarioRepository.findById(idSeguir);
