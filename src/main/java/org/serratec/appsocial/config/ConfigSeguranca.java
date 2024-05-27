@@ -29,9 +29,6 @@ public class ConfigSeguranca {
 	@Autowired
 	UserDetailsService userDetailsService;
 	
-	@Autowired
-	OpenAPIConfig openApiConfig;
-	
 
 	@Autowired
 	JwtUtil jwtUtil;
