@@ -90,7 +90,7 @@ public class UsuarioController {
 
 
 	@PutMapping("/{id}/atualizarDados") //metodo para atualizar NOME e DATANASCIMENTO
-	public ResponseEntity<UsuarioDTO> atualizarDados(@PathVariable Long id,
+	public ResponseEntity<UsuarioDTO> atualizarDados(@PathVariable("id") Long id,
 			@RequestBody UsuarioAtualizarDTO usuarioAtualizarDTO) {
 		UsuarioDTO usuarioAtualizado = usuarioService.atualizarDados(id, usuarioAtualizarDTO);
 		return ResponseEntity.ok(usuarioAtualizado);
