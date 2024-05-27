@@ -98,7 +98,7 @@ public class UsuarioController {
 
 	@PutMapping("/{id}/atualizarSenha") //metodo para atualizar SENHA
 	 public ResponseEntity<Void> atualizarSenha(
-	            @PathVariable Long id, 
+	            @PathVariable("id") Long id, 
 	            @RequestBody UsuarioAtualizarSenhaDTO usuarioAtualizarSenhaDTO) {
 	        usuarioService.atualizarSenha(id, usuarioAtualizarSenhaDTO);
 	        return ResponseEntity.noContent().build();
