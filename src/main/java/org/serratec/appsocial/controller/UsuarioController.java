@@ -1,6 +1,7 @@
 package org.serratec.appsocial.controller;
 
 import java.util.List;
+
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -25,6 +26,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
 
 import jakarta.validation.Valid;
 
@@ -37,6 +40,10 @@ public class UsuarioController {
 
 	@Autowired
 	private UsuarioService usuarioService;
+	
+
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
 
 	@GetMapping // Método para Listar todos os Usuários | localhost:8080/usuarios
 	public ResponseEntity<List<UsuarioDTO>> listar() {
@@ -54,31 +61,36 @@ public class UsuarioController {
 		return ResponseEntity.notFound().build();
 	}
 
-	@PostMapping // Método para criar um novo usuário
-	@ResponseStatus(HttpStatus.CREATED)
-	public UsuarioDTO createLivro(@Valid @RequestBody UsuarioInserirDTO usuarioInserirDTO) {
+	 @PostMapping // Método para criar um novo usuário
+	    @ResponseStatus(HttpStatus.CREATED)
+	    public UsuarioDTO createLivro(@Valid @RequestBody UsuarioInserirDTO usuarioInserirDTO) {
 
-		if (!usuarioInserirDTO.getSenha().equalsIgnoreCase(usuarioInserirDTO.getConfirmaSenha())) {
-			throw new SenhaException("Senha e Confirma Senha não são iguais");
-		}
-		Usuario usuarioBd = usuarioRepository.findByEmail(usuarioInserirDTO.getEmail());
-		if (usuarioBd != null) {
-			throw new EmailException("Email ja existente");
-		}
-		Usuario usuario = new Usuario();
-		usuario.setDataNascimento(usuarioInserirDTO.getDataNascimento());
-		usuario.setEmail(usuarioInserirDTO.getEmail());
-		usuario.setNome(usuarioInserirDTO.getNome());
-		usuario.setSenha(usuarioInserirDTO.getSenha());
-		usuario.setSobrenome(usuarioInserirDTO.getSobrenome());
-		usuario = usuarioRepository.save(usuario);
+	        if (!usuarioInserirDTO.getSenha().equalsIgnoreCase(usuarioInserirDTO.getConfirmaSenha())) {
+	            throw new SenhaException("Senha e Confirma Senha não são iguais");
+	        }
+	        Usuario usuarioBd = usuarioRepository.findByEmail(usuarioInserirDTO.getEmail());
+	        if (usuarioBd != null) {
+	            throw new EmailException("Email já existente");
+	        }
 
-		return new UsuarioDTO(usuario);
-	}
+	        Usuario usuario = new Usuario();
+	        usuario.setDataNascimento(usuarioInserirDTO.getDataNascimento());
+	        usuario.setEmail(usuarioInserirDTO.getEmail());
+	        usuario.setNome(usuarioInserirDTO.getNome());
+	        usuario.setSobrenome(usuarioInserirDTO.getSobrenome());
+
+	        // Criptografar a senha antes de salvar
+	        String senhaCriptografada = passwordEncoder.encode(usuarioInserirDTO.getSenha());
+	        usuario.setSenha(senhaCriptografada);
+
+	        usuario = usuarioRepository.save(usuario);
+
+	        return new UsuarioDTO(usuario);
+	    }
 
 
 	@PutMapping("/{id}/atualizarDados") //metodo para atualizar NOME e DATANASCIMENTO
-	public ResponseEntity<UsuarioDTO> atualizarDados(@PathVariable Long id,
+	public ResponseEntity<UsuarioDTO> atualizarDados(@PathVariable("id") Long id,
 			@RequestBody UsuarioAtualizarDTO usuarioAtualizarDTO) {
 		UsuarioDTO usuarioAtualizado = usuarioService.atualizarDados(id, usuarioAtualizarDTO);
 		return ResponseEntity.ok(usuarioAtualizado);
@@ -86,7 +98,7 @@ public class UsuarioController {
 
 	@PutMapping("/{id}/atualizarSenha") //metodo para atualizar SENHA
 	 public ResponseEntity<Void> atualizarSenha(
-	            @PathVariable Long id, 
+	            @PathVariable("id") Long id, 
 	            @RequestBody UsuarioAtualizarSenhaDTO usuarioAtualizarSenhaDTO) {
 	        usuarioService.atualizarSenha(id, usuarioAtualizarSenhaDTO);
 	        return ResponseEntity.noContent().build();

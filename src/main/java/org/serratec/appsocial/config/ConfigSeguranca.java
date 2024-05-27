@@ -117,7 +117,9 @@ public class ConfigSeguranca {
 	BCryptPasswordEncoder bCryptPasswordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
+	
 
+ 
 	// comentario
 
 }
