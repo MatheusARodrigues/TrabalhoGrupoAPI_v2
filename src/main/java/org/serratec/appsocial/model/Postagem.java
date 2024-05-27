@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.Entity;
@@ -26,6 +27,7 @@ public class Postagem {
 	@JsonBackReference
 	private Usuario autor;
 
+	
 	@OneToMany(mappedBy = "postagem")
 	private List<Comentario> comentarios;
 

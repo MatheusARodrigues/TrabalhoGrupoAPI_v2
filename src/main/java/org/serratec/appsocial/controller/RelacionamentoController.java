@@ -23,7 +23,6 @@ public class RelacionamentoController {
 	@Autowired
 	private UsuarioRepository usuarioRepository;
 	@Autowired
-
 	private RelacionamentoRepository relacionamentoRepository;
 
 	@PostMapping("/{id}/seguir/{idSeguir}") // Método para seguir | localhost:8080/relacionamentos/2/seguir/4
@@ -45,7 +44,8 @@ public class RelacionamentoController {
 
 	}
 
-	@DeleteMapping("/{idSeguir}/deixarDeSeguir/{id}") // Método para deixar de seguir | localhost:8080/relacionamentos/deixarDeSeguir/2/seguir/4
+	@DeleteMapping("/{idSeguir}/deixarDeSeguir/{id}") // Método para deixar de seguir |
+														// localhost:8080/relacionamentos/deixarDeSeguir/2/seguir/4
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void deleteRelacionamento(@PathVariable Long id, @PathVariable Long idSeguir) {
 		Optional<Usuario> usuarioSeguir = usuarioRepository.findById(idSeguir);

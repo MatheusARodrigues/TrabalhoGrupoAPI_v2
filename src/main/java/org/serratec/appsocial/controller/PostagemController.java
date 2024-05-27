@@ -1,10 +1,12 @@
 package org.serratec.appsocial.controller;
 
 import java.util.List;
+
 import java.util.Optional;
 
 import org.serratec.appsocial.model.Postagem;
 import org.serratec.appsocial.repository.PostagemRepository;
+import org.serratec.appsocial.repository.ComentarioRepository;
 import org.serratec.appsocial.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -31,19 +33,20 @@ public class PostagemController {
 	
 	@Autowired
 	private UsuarioRepository usuarioRepository;
+	
+	@Autowired
+	private ComentarioRepository comentarioRepository;
 
-	@GetMapping // Método para Listar todos os Usuários
+	@GetMapping // Método para Listar todas as Postagens
 	public ResponseEntity<List<Postagem>> listar() {
-		return ResponseEntity.ok(postagemRepository.findAll());
-	}
+	    List<Postagem> postagens = postagemRepository.findAll(); // Busca todas as postagens
 
-	@GetMapping("/{id}") // Método para listar usuário por ID
-	public ResponseEntity<Postagem> buscar(@PathVariable Long id) {
-		Optional<Postagem> livroOpt = postagemRepository.findById(id);
-		if (livroOpt.isPresent()) {
-			return ResponseEntity.ok(livroOpt.get());
-		}
-		return ResponseEntity.notFound().build();
+	    // Para cada postagem, busca os comentários associados e os adiciona à postagem
+	    for (Postagem postagem : postagens) {
+	        postagem.setComentarios(comentarioRepository.findByPostagem(postagem)); // Supondo que você tenha um método findByPostagem no seu ComentarioRepository
+	    }
+
+	    return ResponseEntity.ok(postagens); // Retorna a lista de postagens com os comentários associados
 	}
 
 	@PostMapping // Método para criar um novo usuário

@@ -4,7 +4,10 @@ import java.util.List;
 import java.util.Optional;
 
 import org.serratec.appsocial.model.Comentario;
+import org.serratec.appsocial.model.Postagem;
 import org.serratec.appsocial.repository.ComentarioRepository;
+import org.serratec.appsocial.repository.PostagemRepository;
+import org.serratec.appsocial.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,7 +30,10 @@ public class ComentarioController {
 	@Autowired
 	private ComentarioRepository comentarioRepository;
 	
-	@GetMapping 
+	@Autowired
+	private PostagemRepository postagemRepository;
+	
+	@GetMapping
 	public ResponseEntity<List<Comentario>> listar() {
 		return ResponseEntity.ok(comentarioRepository.findAll());
 	}
@@ -46,7 +52,6 @@ public class ComentarioController {
 	public Comentario createLivro(@Valid @RequestBody Comentario comentario) {
 		return comentarioRepository.save(comentario);
 	}
-
 	@PutMapping("/{id}") 
 	public ResponseEntity<Comentario> atualizar(@PathVariable Long id, @Valid @RequestBody Comentario comentario) {
 		if (!comentarioRepository.existsById(id)) {
