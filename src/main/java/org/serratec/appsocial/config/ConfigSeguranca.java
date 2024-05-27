@@ -46,8 +46,7 @@ public class ConfigSeguranca {
 					 * requests.requestMatchers("/v3/api-docs").permitAll();
 					 */
 					
-					 requests.requestMatchers("${dominio.openapi.dev-url}").permitAll();
-					 requests.requestMatchers("${dominio.openapi.prod-url}").permitAll();
+					
 					 requests.requestMatchers("/swagger-ui/**").permitAll();
 					 requests.requestMatchers("/swagger-resources/**").permitAll();
 					 requests.requestMatchers("/v3/api-docs").permitAll();
